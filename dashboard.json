@@ -1,1 +1,32 @@
-{"zoutniveau":100,"resterendKg":15,"waterSindsZoutvulling":0,"dagenSindsZoutvulling":0,"verwachteNavulling":"Onvoldoende data","laatsteRegeneratie":"10-10-2026","capaciteitLiter":0,"capaciteitMax":2300,"regeneraties":[{"datum":"18-10-2026","liter":2184,"dagen":7},{"datum":"11-10-2026","liter":2292,"dagen":7}],"zoutvullingen":[{"datum":"12-08-2026","dagen":118,"regeneraties":26,"water":"58.9"}]}
+{
+  "zoutniveau": 98,
+  "resterendKg": 14.6,
+  "waterSindsZoutvulling": 1.4,
+  "dagenSindsZoutvulling": 5,
+  "verwachteNavulling": "Onvoldoende data",
+  "laatsteRegeneratie": "10-10-2026",
+  "capaciteitLiter": 0,
+  "capaciteitMax": 2300,
+  "regeneraties": [
+    {
+      "date": "2026-10-19T07:08:15.428Z",
+      "meter_liters": 34768,
+      "liters_since_previous": 34767,
+      "days_since_previous": null
+    },
+    {
+      "date": "2026-10-19T13:31:11.796Z",
+      "meter_liters": 34768,
+      "liters_since_previous": 0,
+      "days_since_previous": 0
+    }
+  ],
+  "zoutvullingen": [
+    {
+      "date": "2026-10-19T06:57:23.421Z",
+      "meter_m3": 34.768,
+      "meter_liters": 34768,
+      "salt_kg": 15
+    }
+  ]
+}
