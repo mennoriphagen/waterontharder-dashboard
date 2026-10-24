@@ -1,113 +1,31 @@
-function formatDate(dateString) {
-
-  if (!dateString) return '-';
-
-  const d = new Date(dateString);
-
-  return d.toLocaleDateString(
-    'nl-NL'
-  );
-
+{
+  "zoutniveau": 96,
+  "resterendKg": 14.4,
+  "waterSindsZoutvulling": 2.2,
+  "dagenSindsZoutvulling": 5,
+  "verwachteNavulling": "Onvoldoende data",
+  "laatsteRegeneratie": "10-10-2026",
+  "capaciteitLiter": 0,
+  "capaciteitMax": 2300,
+  "regeneraties": [
+    {
+      "datum": "19-10-2026",
+      "liter": 34767,
+      "dagen": 0
+    },
+    {
+      "datum": "19-10-2026",
+      "liter": 0,
+      "dagen": 0
+    }
+  ],
+  "zoutvullingen": [
+    {
+      "datum": "19-10-2026",
+      "dagen": 0,
+      "regeneraties": 0,
+      "water": 34.768
+    }
+  ],
+  "laatsteUpdate": "24-10-2026, 13:32:43"
 }
-
-const regeneraties =
-  (historie.regenerations || [])
-  .map(r => {
-
-    return {
-
-      datum:
-        formatDate(r.date),
-
-      liter:
-        Number(
-          r.liters_since_previous || 0
-        ),
-
-      dagen:
-        Number(
-          r.days_since_previous || 0
-        )
-
-    };
-
-  });
-
-const zoutvullingen =
-  (historie.saltRefills || [])
-  .map(z => {
-
-    return {
-
-      datum:
-        formatDate(z.date),
-
-      dagen: 0,
-
-      regeneraties: 0,
-
-      water:
-        Number(
-          z.meter_m3 || 0
-        )
-
-    };
-
-  });
-
-const dashboardData = {
-
-  zoutniveau:
-    Number(
-      getVar('WO_ZoutNiveau')?.value || 0
-    ),
-
-  resterendKg:
-    Number(
-      getVar('WO_ResterendKg')?.value || 0
-    ),
-
-  waterSindsZoutvulling:
-    Number(
-      getVar('WO_WaterSindsZoutvulling')?.value || 0
-    ),
-
-  dagenSindsZoutvulling:
-    Number(
-      getVar('WO_DagenSindsZoutvulling')?.value || 0
-    ),
-
-  verwachteNavulling:
-    getVar('WO_VerwachteNavulling')?.value || '-',
-
-  laatsteRegeneratie:
-    getVar('WO_LaatsteRegeneratieDatum')?.value || '-',
-
-  capaciteitLiter:
-    Number(
-      getVar('WO_SindsRegeneratieLiter')?.value || 0
-    ),
-
-  capaciteitMax: 2300,
-
-  regeneraties:
-
-    regeneraties
-      .sort(
-        (a,b) =>
-          b.datum.localeCompare(a.datum)
-      ),
-
-  zoutvullingen:
-
-    zoutvullingen
-      .sort(
-        (a,b) =>
-          b.datum.localeCompare(a.datum)
-      ),
-
-  laatsteUpdate:
-    new Date()
-      .toLocaleString('nl-NL')
-
-};
