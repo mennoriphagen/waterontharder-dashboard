@@ -1,32 +1,113 @@
-{
-  "zoutniveau": 98,
-  "resterendKg": 14.6,
-  "waterSindsZoutvulling": 1.4,
-  "dagenSindsZoutvulling": 5,
-  "verwachteNavulling": "Onvoldoende data",
-  "laatsteRegeneratie": "10-10-2026",
-  "capaciteitLiter": 0,
-  "capaciteitMax": 2300,
-  "regeneraties": [
-    {
-      "date": "2026-10-19T07:08:15.428Z",
-      "meter_liters": 34768,
-      "liters_since_previous": 34767,
-      "days_since_previous": null
-    },
-    {
-      "date": "2026-10-19T13:31:11.796Z",
-      "meter_liters": 34768,
-      "liters_since_previous": 0,
-      "days_since_previous": 0
-    }
-  ],
-  "zoutvullingen": [
-    {
-      "date": "2026-10-19T06:57:23.421Z",
-      "meter_m3": 34.768,
-      "meter_liters": 34768,
-      "salt_kg": 15
-    }
-  ]
+function formatDate(dateString) {
+
+  if (!dateString) return '-';
+
+  const d = new Date(dateString);
+
+  return d.toLocaleDateString(
+    'nl-NL'
+  );
+
 }
+
+const regeneraties =
+  (historie.regenerations || [])
+  .map(r => {
+
+    return {
+
+      datum:
+        formatDate(r.date),
+
+      liter:
+        Number(
+          r.liters_since_previous || 0
+        ),
+
+      dagen:
+        Number(
+          r.days_since_previous || 0
+        )
+
+    };
+
+  });
+
+const zoutvullingen =
+  (historie.saltRefills || [])
+  .map(z => {
+
+    return {
+
+      datum:
+        formatDate(z.date),
+
+      dagen: 0,
+
+      regeneraties: 0,
+
+      water:
+        Number(
+          z.meter_m3 || 0
+        )
+
+    };
+
+  });
+
+const dashboardData = {
+
+  zoutniveau:
+    Number(
+      getVar('WO_ZoutNiveau')?.value || 0
+    ),
+
+  resterendKg:
+    Number(
+      getVar('WO_ResterendKg')?.value || 0
+    ),
+
+  waterSindsZoutvulling:
+    Number(
+      getVar('WO_WaterSindsZoutvulling')?.value || 0
+    ),
+
+  dagenSindsZoutvulling:
+    Number(
+      getVar('WO_DagenSindsZoutvulling')?.value || 0
+    ),
+
+  verwachteNavulling:
+    getVar('WO_VerwachteNavulling')?.value || '-',
+
+  laatsteRegeneratie:
+    getVar('WO_LaatsteRegeneratieDatum')?.value || '-',
+
+  capaciteitLiter:
+    Number(
+      getVar('WO_SindsRegeneratieLiter')?.value || 0
+    ),
+
+  capaciteitMax: 2300,
+
+  regeneraties:
+
+    regeneraties
+      .sort(
+        (a,b) =>
+          b.datum.localeCompare(a.datum)
+      ),
+
+  zoutvullingen:
+
+    zoutvullingen
+      .sort(
+        (a,b) =>
+          b.datum.localeCompare(a.datum)
+      ),
+
+  laatsteUpdate:
+    new Date()
+      .toLocaleString('nl-NL')
+
+};
