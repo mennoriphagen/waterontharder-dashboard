@@ -3,29 +3,11 @@
   "resterendKg": 14.4,
   "waterSindsZoutvulling": 2.2,
   "dagenSindsZoutvulling": 23,
-  "verwachteNavulling": "5-6-2028",
+  "verwachteNavulling": "21-5-2028",
   "laatsteRegeneratie": "10-10-2026",
   "capaciteitLiter": 0,
   "capaciteitMax": 2300,
-  "regeneraties": [
-    {
-      "datum": "19-10-2026",
-      "liter": 34767,
-      "dagen": 0
-    },
-    {
-      "datum": "19-10-2026",
-      "liter": 0,
-      "dagen": 0
-    }
-  ],
-  "zoutvullingen": [
-    {
-      "datum": "19-10-2026",
-      "dagen": 0,
-      "regeneraties": 0,
-      "water": 34.768
-    }
-  ],
-  "laatsteUpdate": "24-10-2026, 13:55:43"
+  "regeneraties": [],
+  "zoutvullingen": [],
+  "laatsteUpdate": "24-10-2026, 15:07:41"
 }
