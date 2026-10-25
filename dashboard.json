@@ -1,9 +1,9 @@
 {
   "zoutniveau": 95,
   "resterendKg": 14.3,
-  "waterSindsZoutvulling": 2.6,
+  "waterSindsZoutvulling": 2.7,
   "dagenSindsZoutvulling": 24,
-  "verwachteNavulling": "11-3-2028",
+  "verwachteNavulling": "7-3-2028",
   "laatsteRegeneratie": "17-10-2026",
   "capaciteitLiter": 0,
   "capaciteitMax": 2300,
@@ -39,5 +39,5 @@
       "water": 0
     }
   ],
-  "laatsteUpdate": "25-10-2026, 10:56:59"
+  "laatsteUpdate": "25-10-2026, 10:57:22"
 }
