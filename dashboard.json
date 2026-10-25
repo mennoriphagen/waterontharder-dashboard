@@ -4,10 +4,21 @@
   "waterSindsZoutvulling": 2.6,
   "dagenSindsZoutvulling": 24,
   "verwachteNavulling": "11-3-2028",
-  "laatsteRegeneratie": "10-10-2026",
+  "laatsteRegeneratie": "17-10-2026",
   "capaciteitLiter": 0,
   "capaciteitMax": 2300,
-  "regeneraties": [],
+  "regeneraties": [
+    {
+      "datum": "17-10-2026",
+      "liter": 0,
+      "dagen": 0
+    },
+    {
+      "datum": "25-10-2026",
+      "liter": 2656,
+      "dagen": 8
+    }
+  ],
   "zoutvullingen": [
     {
       "datum": "24-1-2026",
@@ -28,5 +39,5 @@
       "water": 0
     }
   ],
-  "laatsteUpdate": "25-10-2026, 10:50:57"
+  "laatsteUpdate": "25-10-2026, 10:56:59"
 }
