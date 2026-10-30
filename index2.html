@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Boshuis 150 Waterontharder</title>
+
+<style>
+
+:root{
+ --bg:#08142e;
+ --card:#1c2944;
+ --header:#020c1d;
+ --accent:#3b82f6;
+ --green:#22c55e;
+ --orange:#f59e0b;
+ --red:#ef4444;
+ --text:#f5f7fb;
+ --muted:#9ca3af;
+}
+
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+}
+
+body{
+ background:var(--bg);
+ color:var(--text);
+ font-family:Segoe UI,sans-serif;
+}
+
+header{
+ background:var(--header);
+ text-align:center;
+ padding:22px;
+ font-size:18px;
+ font-weight:700;
+}
+
+.tabs{
+ display:flex;
+ overflow-x:auto;
+ background:#0d1a33;
+ scrollbar-width:none;
+}
+
+.tabs::-webkit-scrollbar{
+ display:none;
+}
+
+.tab{
+ flex:0 0 auto;
+ min-width:140px;
+ padding:16px;
+ text-align:center;
+ cursor:pointer;
+ border-bottom:3px solid transparent;
+ white-space:nowrap;
+}
+
+.tab.active{
+ border-bottom:3px solid var(--accent);
+ background:#1c2944;
+}
+
+.page{
+ display:none;
+ padding:15px;
+ max-width:1200px;
+ margin:auto;
+}
+
+.page.active{
+ display:block;
+}
+
+.cards{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:15px;
+ margin-bottom:25px;
+}
+
+.card{
+ background:var(--card);
+ border-radius:16px;
+ padding:20px;
+}
+
+.label{
+ color:var(--muted);
+ font-size:14px;
+ margin-bottom:10px;
+}
+
+.value{
+ font-size:28px;
+ font-weight:700;
+}
+
+.dashboard{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:30px;
+}
+
+.tank{
+ width:240px;
+ height:420px;
+ border:5px solid white;
+ border-radius:28px;
+ overflow:hidden;
+ position:relative;
+ background:#0d1a33;
+}
+
+.salt{
+ position:absolute;
+ left:0;
+ bottom:0;
+ width:100%;
+ transition:1s;
+}
+
+.percent{
+ position:absolute;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ font-size:48px;
+ font-weight:bold;
+}
+
+.status{
+ min-width:280px;
+}
+
+.status h2{
+ margin-bottom:15px;
+}
+
+.status p{
+ margin-bottom:8px;
+}
+
+.progress{
+ height:34px;
+ background:#374151;
+ border-radius:17px;
+ overflow:hidden;
+ margin-top:10px;
+}
+
+.progress-fill{
+ height:100%;
+ width:0%;
+ background:var(--accent);
+ transition:1s;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ background:var(--card);
+ border-radius:12px;
+ overflow:hidden;
+}
+
+th{
+ background:#2b3c61;
+ text-align:left;
+ padding:12px;
+}
+
+td{
+ padding:12px;
+ border-top:1px solid #334155;
+}
+
+.stat-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:15px;
+}
+
+.stat{
+ background:var(--card);
+ padding:20px;
+ border-radius:16px;
+ text-align:center;
+}
+
+.stat-value{
+ font-size:32px;
+ font-weight:bold;
+ margin-top:8px;
+}
+
+.footer{
+ margin-top:25px;
+ text-align:center;
+ color:#9ca3af;
+ font-size:13px;
+}
+
+@media(max-width:768px){
+
+ header{
+  font-size:14px;
+  padding:14px;
+ }
+
+ .page{
+  padding:10px;
+ }
+
+ .tabs{
+  font-size:14px;
+ }
+
+ .tab{
+  min-width:100px;
+  padding:10px 12px;
+ }
+
+ .cards{
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+ }
+
+ .card{
+  padding:12px;
+  border-radius:12px;
+ }
+
+ .label{
+  font-size:12px;
+  margin-bottom:4px;
+ }
+
+ .value{
+  font-size:20px;
+ }
+
+ .dashboard{
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+ }
+
+ .tank{
+  width:140px;
+  height:250px;
+ }
+
+ .percent{
+  font-size:30px;
+ }
+
+ .status{
+  width:100%;
+  min-width:auto;
+ }
+
+ .status h2{
+  font-size:18px;
+  margin-bottom:10px;
+ }
+
+ .status p{
+  font-size:14px;
+  margin-bottom:5px;
+ }
+
+ .stat{
+  padding:12px;
+ }
+
+ .stat-value{
+  font-size:24px;
+ }
+
+ table{
+  font-size:13px;
+ }
+
+ th,
+ td{
+  padding:8px;
+ }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+💧 Boshuis 150 Waterontharder
+</header>
+
+<div class="tabs">
+ <div class="tab active" onclick="showTab(0)">Dashboard</div>
+ <div class="tab" onclick="showTab(1)">Regeneraties</div>
+ <div class="tab" onclick="showTab(2)">Zoutvullingen</div>
+ <div class="tab" onclick="showTab(3)">Statistieken</div>
+</div>
+
+<div class="page active">
+
+<div class="cards">
+
+<div class="card">
+<div class="label">Zoutniveau</div>
+<div id="saltLevel" class="value">-</div>
+</div>
+
+<div class="card">
+<div class="label">Resterend zout</div>
+<div id="saltKg" class="value">-</div>
+</div>
+
+<div class="card">
+<div class="label">Sinds zoutvulling</div>
+<div id="waterUsed" class="value">-</div>
+</div>
+
+<div class="card">
+<div class="label">Dagen sinds vullen</div>
+<div id="daysUsed" class="value">-</div>
+</div>
+
+</div>
+
+<div class="dashboard">
+
+<div>
+
+<div class="tank">
+
+<div id="saltFill" class="salt"></div>
+
+<div id="tankPercent" class="percent">
+-
+</div>
+
+</div>
+
+<h3 style="margin-top:15px;">
+Capaciteit sinds regeneratie
+</h3>
+
+<div class="progress">
+<div id="capacityFill" class="progress-fill"></div>
+</div>
+
+<p id="capacityText" style="margin-top:8px;">
+-
+</p>
+
+</div>
+
+<div class="status">
+
+<h2>Status</h2>
+
+<p>
+Laatste regeneratie:
+<b id="lastRegen"></b>
+</p>
+
+<p>
+Verwachte navulling:
+<b id="prediction"></b>
+</p>
+
+<p>
+Aantal regeneraties:
+<b id="regenCount"></b>
+</p>
+
+<p>
+Laatste synchronisatie:
+<b id="lastUpdate"></b>
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="page">
+
+<table>
+<thead>
+<tr>
+<th>Datum</th>
+<th>Liter</th>
+<th>Dagen</th>
+</tr>
+</thead>
+
+<tbody id="regenTable"></tbody>
+
+</table>
+
+</div>
+
+<div class="page">
+
+<table>
+<thead>
+<tr>
+<th>Datum</th>
+<th>Dagen</th>
+<th>Regeneraties</th>
+<th>Water m³</th>
+</tr>
+</thead>
+
+<tbody id="saltTable"></tbody>
+
+</table>
+
+</div>
+
+<div class="page">
+
+<div class="stat-grid">
+
+<div class="stat">
+<div>Regeneraties</div>
+<div id="statRegens" class="stat-value">0</div>
+</div>
+
+<div class="stat">
+<div>Zoutvullingen</div>
+<div id="statRefills" class="stat-value">0</div>
+</div>
+
+<div class="stat">
+<div>Gem. liter</div>
+<div id="statAvgLiters" class="stat-value">0</div>
+</div>
+
+<div class="stat">
+<div>Gem. dagen</div>
+<div id="statAvgDays" class="stat-value">0</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showTab(index){
+
+ document.querySelectorAll('.tab')
+   .forEach(t=>t.classList.remove('active'));
+
+ document.querySelectorAll('.page')
+   .forEach(p=>p.classList.remove('active'));
+
+ document.querySelectorAll('.tab')[index]
+   .classList.add('active');
+
+ document.querySelectorAll('.page')[index]
+   .classList.add('active');
+}
+
+fetch('dashboard.json')
+.then(r=>r.json())
+.then(data=>{
+
+ saltLevel.innerText =
+   data.zoutniveau + '%';
+
+ saltKg.innerText =
+   data.resterendKg + ' kg';
+
+ waterUsed.innerText =
+   data.waterSindsZoutvulling + ' m³';
+
+ daysUsed.innerText =
+   data.dagenSindsZoutvulling;
+
+ tankPercent.innerText =
+   data.zoutniveau + '%';
+
+ let color='#22c55e';
+
+ if(data.zoutniveau < 20)
+   color='#ef4444';
+ else if(data.zoutniveau < 50)
+   color='#f59e0b';
+
+ saltFill.style.height =
+   data.zoutniveau + '%';
+
+ saltFill.style.background =
+   color;
+
+ lastRegen.innerText =
+   data.laatsteRegeneratie;
+
+ prediction.innerText =
+   data.verwachteNavulling;
+
+ regenCount.innerText =
+   data.regeneraties.length;
+
+ lastUpdate.innerText =
+   data.laatsteUpdate;
+
+ const num = v => parseFloat(String(v).replace(',','.'));
+ const capNow = num(data.capaciteitLiter);
+ const capMax = num(data.capaciteitMax);
+
+ if(isFinite(capNow) && capMax > 0){
+
+   const cap = Math.max(0,
+     Math.min(100, capNow / capMax * 100));
+
+   capacityFill.style.width =
+     cap + '%';
+
+   capacityFill.style.background =
+     cap >= 90 ? 'var(--red)' :
+     cap >= 75 ? 'var(--orange)' :
+     'var(--accent)';
+
+   capacityText.innerText =
+     Math.round(capNow) +
+     ' / ' +
+     capMax +
+     ' liter';
+
+ } else {
+
+   capacityFill.style.width = '0%';
+
+   capacityText.innerText =
+     'Geen geldige capaciteitLiter of capaciteitMax in dashboard.json';
+
+ }
+
+ let regenRows = '';
+
+ data.regeneraties.forEach(r => {
+
+   regenRows += `
+   <tr>
+    <td>${r.datum}</td>
+    <td>${r.liter}</td>
+    <td>${r.dagen}</td>
+   </tr>
+   `;
+
+ });
+
+ regenTable.innerHTML =
+   regenRows;
+
+ let saltRows = '';
+
+ data.zoutvullingen.forEach(z => {
+
+   saltRows += `
+   <tr>
+    <td>${z.datum}</td>
+    <td>${z.dagen}</td>
+    <td>${z.regeneraties}</td>
+    <td>${z.water}</td>
+   </tr>
+   `;
+
+ });
+
+ saltTable.innerHTML =
+   saltRows;
+
+ statRegens.innerText =
+   data.regeneraties.length;
+
+ statRefills.innerText =
+   data.zoutvullingen.length;
+
+ const avgLiters =
+   data.regeneraties.length
+   ? Math.round(
+     data.regeneraties.reduce(
+      (a,b)=>a+b.liter,0
+     ) /
+     data.regeneraties.length
+   )
+   : 0;
+
+ const avgDays =
+   data.regeneraties.length
+   ? (
+     data.regeneraties.reduce(
+      (a,b)=>a+b.dagen,0
+     ) /
+     data.regeneraties.length
+   ).toFixed(1)
+   : 0;
+
+ statAvgLiters.innerText =
+   avgLiters;
+
+ statAvgDays.innerText =
+   avgDays;
+
+});
+
+</script>
+
+</body>
+</html>
