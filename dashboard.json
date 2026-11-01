@@ -22,6 +22,11 @@
       "datum": "28-10-2026",
       "liter": 1931,
       "dagen": 3
+    },
+    {
+      "datum": "1-11-2026",
+      "liter": 0,
+      "dagen": 0
     }
   ],
   "zoutvullingen": [
@@ -44,5 +49,5 @@
       "water": 0
     }
   ],
-  "laatsteUpdate": "1-11-2026, 02:00:05"
+  "laatsteUpdate": "1-11-2026, 04:45:05"
 }
