@@ -211,6 +211,17 @@ td{
  margin-top:8px;
 }
 
+.warning{
+ background:rgba(239,68,68,.15);
+ border:1px solid var(--red);
+ color:#fecaca;
+ border-radius:12px;
+ padding:14px 18px;
+ margin-bottom:15px;
+ font-weight:600;
+ text-align:center;
+}
+
 .footer{
  margin-top:25px;
  text-align:center;
@@ -322,6 +333,8 @@ td{
 </div>
 
 <div class="page active">
+
+<div id="saltWarning" class="warning" hidden></div>
 
 <div class="cards">
 
@@ -520,6 +533,19 @@ fetch('dashboard.json')
 
  tankPercent.innerText =
    data.zoutniveau + '%';
+
+ // Waarschuwing als er zout bijgevuld moet worden
+ const SALT_WARN_LEVEL = 20;
+
+ if(Number(data.zoutniveau) < SALT_WARN_LEVEL){
+
+   saltWarning.innerText =
+     '⚠️ Zout bijvullen: nog ' +
+     data.resterendKg + ' kg (' +
+     data.zoutniveau + '%)';
+
+   saltWarning.hidden = false;
+ }
 
  let color='#22c55e';
 
