@@ -211,6 +211,21 @@ td{
  margin-top:8px;
 }
 
+.rack{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+ max-width:520px;
+ margin:20px auto;
+}
+
+.bag{
+ height:64px;
+ border-radius:32px;
+ border:2px solid #fff;
+ transition:background .6s;
+}
+
 .warning{
  background:rgba(239,68,68,.15);
  border:1px solid var(--red);
@@ -310,6 +325,15 @@ td{
   font-size:13px;
  }
 
+ .bag{
+  height:46px;
+  border-radius:23px;
+ }
+
+ .rack{
+  gap:8px;
+ }
+
  th,
  td{
   padding:8px;
@@ -329,7 +353,8 @@ td{
  <div class="tab active" onclick="showTab(0)">Dashboard</div>
  <div class="tab" onclick="showTab(1)">Regeneraties</div>
  <div class="tab" onclick="showTab(2)">Zoutvullingen</div>
- <div class="tab" onclick="showTab(3)">Statistieken</div>
+ <div class="tab" onclick="showTab(3)">Zoutvoorraad</div>
+ <div class="tab" onclick="showTab(4)">Statistieken</div>
 </div>
 
 <div class="page active">
@@ -455,6 +480,30 @@ Laatste synchronisatie:
 <tbody id="saltTable"></tbody>
 
 </table>
+
+</div>
+
+<div class="page">
+
+<div class="cards">
+
+<div class="card">
+<div class="label">Zakken op voorraad</div>
+<div id="stockCount" class="value">-</div>
+</div>
+
+<div class="card">
+<div class="label">Totaal zout</div>
+<div id="stockKg" class="value">-</div>
+</div>
+
+</div>
+
+<h3 style="margin-bottom:12px; text-align:center;">
+Zoutvoorraad
+</h3>
+
+<div id="bagRack" class="rack"></div>
 
 </div>
 
@@ -685,6 +734,69 @@ fetch('dashboard.json')
 
  statAvgDays.innerText =
    avgDays;
+
+ // Zoutvoorraad: 3 stapels, zakken van onder naar boven
+ const stackCount = 3;
+
+ const stockMax =
+   Number(data.zoutVoorraadMax) || 9;
+
+ const levels =
+   Math.ceil(stockMax / stackCount);
+
+ const stockKnown =
+   Number.isFinite(Number(data.zoutVoorraad));
+
+ const stock =
+   stockKnown
+   ? Math.min(
+       stockMax,
+       Math.max(0, Number(data.zoutVoorraad))
+     )
+   : 0;
+
+ const bagKg =
+   Number(data.zakKg) || 15;
+
+ stockCount.innerText =
+   stockKnown
+   ? stock + ' / ' + stockMax
+   : '-';
+
+ stockKg.innerText =
+   stockKnown
+   ? (stock * bagKg) + ' kg'
+   : '-';
+
+ let bagColor = '#22c55e';
+
+ if(stock <= 1)
+   bagColor = '#ef4444';
+ else if(stock <= 3)
+   bagColor = '#f59e0b';
+
+ let bagHtml = '';
+
+ for(let level = levels - 1; level >= 0; level--){
+
+   for(let s = 0; s < stackCount; s++){
+
+     const inStack =
+       Math.floor(stock / stackCount) +
+       (s < stock % stackCount ? 1 : 0);
+
+     const full = inStack > level;
+
+     bagHtml +=
+       '<div class="bag"' +
+       (full
+         ? ' style="background:' + bagColor + ';border-color:' + bagColor + ';"'
+         : '') +
+       '></div>';
+   }
+ }
+
+ bagRack.innerHTML = bagHtml;
 
 });
 
