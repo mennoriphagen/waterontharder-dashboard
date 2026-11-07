@@ -478,6 +478,22 @@ fetch('dashboard.json')
 .then(r=>r.json())
 .then(data=>{
 
+ const isEmpty = v =>
+   v === null || v === undefined || v === '';
+
+ const show = v =>
+   isEmpty(v) ? '-' : v;
+
+ const isZero = v =>
+   !isEmpty(v) && Number(v) === 0;
+
+ // Alleen de dubbele registratie (0 liter en 0 dagen) laten we weg.
+ // De eerste regeneratie, zonder meterstand, blijft staan.
+ const regens =
+   data.regeneraties.filter(
+     r => !(isZero(r.liter) && isZero(r.dagen))
+   );
+
  saltLevel.innerText =
    data.zoutniveau + '%';
 
@@ -513,7 +529,7 @@ fetch('dashboard.json')
    data.verwachteNavulling;
 
  regenCount.innerText =
-   data.regeneraties.length;
+   regens.length;
 
  lastUpdate.innerText =
    data.laatsteUpdate;
@@ -533,13 +549,13 @@ fetch('dashboard.json')
 
  let regenRows = '';
 
- data.regeneraties.forEach(r => {
+ regens.forEach(r => {
 
    regenRows += `
    <tr>
     <td>${r.datum}</td>
-    <td>${r.liter}</td>
-    <td>${r.dagen}</td>
+    <td>${show(r.liter)}</td>
+    <td>${show(r.dagen)}</td>
    </tr>
    `;
 
@@ -567,28 +583,34 @@ fetch('dashboard.json')
    saltRows;
 
  statRegens.innerText =
-   data.regeneraties.length;
+   regens.length;
 
  statRefills.innerText =
    data.zoutvullingen.length;
 
+ const literValues =
+   regens
+   .filter(r => !isEmpty(r.liter))
+   .map(r => Number(r.liter));
+
+ const dayValues =
+   regens
+   .filter(r => !isEmpty(r.dagen))
+   .map(r => Number(r.dagen));
+
  const avgLiters =
-   data.regeneraties.length
+   literValues.length
    ? Math.round(
-     data.regeneraties.reduce(
-      (a,b)=>a+b.liter,0
-     ) /
-     data.regeneraties.length
+     literValues.reduce((a,b)=>a+b,0) /
+     literValues.length
    )
    : 0;
 
  const avgDays =
-   data.regeneraties.length
+   dayValues.length
    ? (
-     data.regeneraties.reduce(
-      (a,b)=>a+b.dagen,0
-     ) /
-     data.regeneraties.length
+     dayValues.reduce((a,b)=>a+b,0) /
+     dayValues.length
    ).toFixed(1)
    : 0;
 
