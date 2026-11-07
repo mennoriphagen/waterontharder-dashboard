@@ -148,11 +148,22 @@ header{
 }
 
 .progress{
+ position:relative;
  height:34px;
  background:#374151;
  border-radius:17px;
  overflow:hidden;
  margin-top:10px;
+}
+
+.progress-label{
+ position:absolute;
+ inset:0;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:700;
+ text-shadow:0 1px 3px rgba(0,0,0,.6);
 }
 
 .progress-fill{
@@ -356,6 +367,7 @@ Capaciteit sinds regeneratie
 
 <div class="progress">
 <div id="capacityFill" class="progress-fill"></div>
+<div id="capacityPercent" class="progress-label">-</div>
 </div>
 
 <p id="capacityText" style="margin-top:8px;">
@@ -534,17 +546,38 @@ fetch('dashboard.json')
  lastUpdate.innerText =
    data.laatsteUpdate;
 
+ const capMax =
+   Number(data.capaciteitMax) || 2300;
+
+ const capLiter =
+   Math.max(0, Number(data.capaciteitLiter) || 0);
+
+ const capRaw =
+   (capLiter / capMax) * 100;
+
  const cap =
- (data.capaciteitLiter /
-  data.capaciteitMax) * 100;
+   Math.min(100, capRaw);
+
+ let capColor = '#3b82f6';
+
+ if(capRaw >= 95)
+   capColor = '#ef4444';
+ else if(capRaw >= 80)
+   capColor = '#f59e0b';
 
  capacityFill.style.width =
    cap + '%';
 
+ capacityFill.style.background =
+   capColor;
+
+ capacityPercent.innerText =
+   Math.round(capRaw) + '%';
+
  capacityText.innerText =
-   data.capaciteitLiter +
+   Math.round(capLiter) +
    ' / ' +
-   data.capaciteitMax +
+   capMax +
    ' liter';
 
  let regenRows = '';
@@ -588,14 +621,17 @@ fetch('dashboard.json')
  statRefills.innerText =
    data.zoutvullingen.length;
 
+ const isNum = v =>
+   !isEmpty(v) && Number.isFinite(Number(v));
+
  const literValues =
    regens
-   .filter(r => !isEmpty(r.liter))
+   .filter(r => isNum(r.liter))
    .map(r => Number(r.liter));
 
  const dayValues =
    regens
-   .filter(r => !isEmpty(r.dagen))
+   .filter(r => isNum(r.dagen))
    .map(r => Number(r.dagen));
 
  const avgLiters =
