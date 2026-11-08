@@ -3,841 +3,275 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
 <title>Boshuis 150 Waterontharder</title>
-
 <style>
-
 :root{
- --bg:#08142e;
- --card:#1c2944;
- --header:#020c1d;
- --accent:#3b82f6;
- --green:#22c55e;
- --orange:#f59e0b;
- --red:#ef4444;
- --text:#f5f7fb;
- --muted:#9ca3af;
+ /* Kleuren: hier aanpassen voor de exacte Boshuis-kleuren */
+ --brand:#00508c;--brand-d:#12304a;--accent:#0e86c8;
+ --bg:#f2f6fa;--card:#fff;--text:#14304a;--muted:#5d7488;
+ --line:#dbe6ee;--track:#4a6a85;
+ --green:#22a559;--orange:#f59e0b;--red:#e5484d;
 }
-
-*{
- box-sizing:border-box;
- margin:0;
- padding:0;
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:12px 18px}
+header h1{font-size:18px;font-weight:700}
+#burger{background:none;border:0;cursor:pointer;width:42px;height:42px;display:grid;place-content:center;gap:5px}
+#burger span{display:block;width:24px;height:3px;background:#fff;border-radius:2px}
+#menu{display:none;position:absolute;right:0;top:100%;width:min(100%,290px);background:#fff;box-shadow:0 10px 26px rgba(0,0,0,.2);border-radius:0 0 14px 14px;overflow:hidden}
+#menu.open{display:block}
+#menu a{display:block;padding:16px 20px;color:var(--text);text-decoration:none;border-bottom:1px solid var(--line);border-left:4px solid transparent;font-weight:600}
+#menu a.active{background:#e8f1f8;color:var(--brand);border-left-color:var(--accent)}
+.page{display:none;padding:18px;max-width:1100px;margin:auto}
+.page.active{display:block}
+.back{display:inline-block;color:var(--accent);text-decoration:none;font-weight:600;margin-bottom:8px}
+.pt{font-size:22px;margin-bottom:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:22px}
+.card,.stat,.status{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 1px 3px rgba(18,48,74,.06)}
+.label{color:var(--muted);font-size:13px;margin-bottom:8px}
+.value{font-size:28px;font-weight:700;color:var(--brand)}
+.dash{display:flex;flex-wrap:wrap;justify-content:center;gap:32px}
+.col{width:100%;max-width:250px}
+.col h3{margin-bottom:12px}
+.tank{width:230px;height:400px;margin:auto;border:5px solid var(--brand);border-radius:28px;overflow:hidden;position:relative;background:var(--brand-d)}
+.salt{position:absolute;left:0;bottom:0;width:100%;transition:height 1s}
+.pct{position:absolute;inset:0;display:grid;place-content:center;font-size:46px;font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.45)}
+.bar{position:relative;height:34px;background:var(--track);border-radius:17px;overflow:hidden;margin-top:10px}
+.fill{height:100%;width:0;transition:width 1s}
+.lbl{position:absolute;inset:0;display:grid;place-content:center;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.status{min-width:280px;align-self:flex-start}
+.status h2{margin-bottom:14px}
+.status p{margin-bottom:8px}
+.warning{background:#fdecec;border:1px solid var(--red);color:#9b1c1f;border-radius:12px;padding:14px 18px;margin-bottom:16px;font-weight:600;text-align:center}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{background:#e8f1f8;color:var(--brand);text-align:left;padding:12px}
+td{padding:12px;border-top:1px solid var(--line)}
+.rack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:520px;margin:20px auto}
+.bag{height:64px;border-radius:32px;border:2px solid var(--brand);background:#fff;transition:background .6s}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.stat{text-align:center}
+.sv{font-size:32px;font-weight:700;margin-top:8px;color:var(--brand)}
+.foot{margin-top:24px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:640px){
+ header h1{font-size:15px}
+ .page{padding:12px}
+ .cards{grid-template-columns:repeat(2,1fr);gap:10px}
+ .card,.stat,.status{padding:12px;border-radius:12px}
+ .label{font-size:12px;margin-bottom:4px}
+ .value{font-size:21px}
+ .dash{flex-direction:column;align-items:center;gap:16px}
+ .tank{width:140px;height:250px}
+ .pct{font-size:30px}
+ .status{width:100%;min-width:0}
+ .sv{font-size:24px}
+ table{font-size:13px}
+ th,td{padding:8px}
+ .bag{height:46px;border-radius:23px}
+ .rack{gap:8px}
 }
-
-body{
- background:var(--bg);
- color:var(--text);
- font-family:Segoe UI,sans-serif;
-}
-
-header{
- background:var(--header);
- text-align:center;
- padding:22px;
- font-size:18px;
- font-weight:700;
-}
-
-.tabs{
- display:flex;
- overflow-x:auto;
- background:#0d1a33;
- scrollbar-width:none;
-}
-
-.tabs::-webkit-scrollbar{
- display:none;
-}
-
-.tab{
- flex:0 0 auto;
- min-width:140px;
- padding:16px;
- text-align:center;
- cursor:pointer;
- border-bottom:3px solid transparent;
- white-space:nowrap;
-}
-
-.tab.active{
- border-bottom:3px solid var(--accent);
- background:#1c2944;
-}
-
-.page{
- display:none;
- padding:15px;
- max-width:1200px;
- margin:auto;
-}
-
-.page.active{
- display:block;
-}
-
-.cards{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:15px;
- margin-bottom:25px;
-}
-
-.card{
- background:var(--card);
- border-radius:16px;
- padding:20px;
-}
-
-.label{
- color:var(--muted);
- font-size:14px;
- margin-bottom:10px;
-}
-
-.value{
- font-size:28px;
- font-weight:700;
-}
-
-.dashboard{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- gap:30px;
-}
-
-.tank{
- width:240px;
- height:420px;
- border:5px solid white;
- border-radius:28px;
- overflow:hidden;
- position:relative;
- background:#0d1a33;
-}
-
-.salt{
- position:absolute;
- left:0;
- bottom:0;
- width:100%;
- transition:1s;
-}
-
-.percent{
- position:absolute;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%);
- font-size:48px;
- font-weight:bold;
-}
-
-.status{
- min-width:280px;
-}
-
-.status h2{
- margin-bottom:15px;
-}
-
-.status p{
- margin-bottom:8px;
-}
-
-.progress{
- position:relative;
- height:34px;
- background:#374151;
- border-radius:17px;
- overflow:hidden;
- margin-top:10px;
-}
-
-.progress-label{
- position:absolute;
- inset:0;
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:700;
- text-shadow:0 1px 3px rgba(0,0,0,.6);
-}
-
-.progress-fill{
- height:100%;
- width:0%;
- background:var(--accent);
- transition:1s;
-}
-
-table{
- width:100%;
- border-collapse:collapse;
- background:var(--card);
- border-radius:12px;
- overflow:hidden;
-}
-
-th{
- background:#2b3c61;
- text-align:left;
- padding:12px;
-}
-
-td{
- padding:12px;
- border-top:1px solid #334155;
-}
-
-.stat-grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:15px;
-}
-
-.stat{
- background:var(--card);
- padding:20px;
- border-radius:16px;
- text-align:center;
-}
-
-.stat-value{
- font-size:32px;
- font-weight:bold;
- margin-top:8px;
-}
-
-.rack{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:12px;
- max-width:520px;
- margin:20px auto;
-}
-
-.bag{
- height:64px;
- border-radius:32px;
- border:2px solid #fff;
- transition:background .6s;
-}
-
-.warning{
- background:rgba(239,68,68,.15);
- border:1px solid var(--red);
- color:#fecaca;
- border-radius:12px;
- padding:14px 18px;
- margin-bottom:15px;
- font-weight:600;
- text-align:center;
-}
-
-.footer{
- margin-top:25px;
- text-align:center;
- color:#9ca3af;
- font-size:13px;
-}
-
-@media(max-width:768px){
-
- header{
-  font-size:14px;
-  padding:14px;
- }
-
- .page{
-  padding:10px;
- }
-
- .tabs{
-  font-size:14px;
- }
-
- .tab{
-  min-width:100px;
-  padding:10px 12px;
- }
-
- .cards{
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
- }
-
- .card{
-  padding:12px;
-  border-radius:12px;
- }
-
- .label{
-  font-size:12px;
-  margin-bottom:4px;
- }
-
- .value{
-  font-size:20px;
- }
-
- .dashboard{
-  flex-direction:column;
-  align-items:center;
-  gap:15px;
- }
-
- .tank{
-  width:140px;
-  height:250px;
- }
-
- .percent{
-  font-size:30px;
- }
-
- .status{
-  width:100%;
-  min-width:auto;
- }
-
- .status h2{
-  font-size:18px;
-  margin-bottom:10px;
- }
-
- .status p{
-  font-size:14px;
-  margin-bottom:5px;
- }
-
- .stat{
-  padding:12px;
- }
-
- .stat-value{
-  font-size:24px;
- }
-
- table{
-  font-size:13px;
- }
-
- .bag{
-  height:46px;
-  border-radius:23px;
- }
-
- .rack{
-  gap:8px;
- }
-
- th,
- td{
-  padding:8px;
- }
-}
-
 </style>
 </head>
-
 <body>
 
 <header>
-💧 Boshuis 150 Waterontharder
+ <h1>💧 Boshuis 150 Waterontharder</h1>
+ <button id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+ <nav id="menu">
+  <a id="m-dashboard" href="#dashboard">Dashboard</a>
+  <a id="m-regen" href="#regen">Regeneraties</a>
+  <a id="m-refills" href="#refills">Zoutvullingen</a>
+  <a id="m-stock" href="#stock">Zoutvoorraad</a>
+  <a id="m-stats" href="#stats">Statistieken</a>
+ </nav>
 </header>
 
-<div class="tabs">
- <div class="tab active" onclick="showTab(0)">Dashboard</div>
- <div class="tab" onclick="showTab(1)">Regeneraties</div>
- <div class="tab" onclick="showTab(2)">Zoutvullingen</div>
- <div class="tab" onclick="showTab(3)">Zoutvoorraad</div>
- <div class="tab" onclick="showTab(4)">Statistieken</div>
+<main>
+
+<div id="p-dashboard" class="page active">
+ <div id="err" class="warning" hidden>De gegevens konden niet worden geladen. Probeer het later opnieuw.</div>
+ <div id="saltWarning" class="warning" hidden></div>
+
+ <div class="cards">
+  <div class="card"><div class="label">Zoutniveau</div><div id="saltLevel" class="value">-</div></div>
+  <div class="card"><div class="label">Resterend zout</div><div id="saltKg" class="value">-</div></div>
+  <div class="card"><div class="label">Sinds zoutvulling</div><div id="waterUsed" class="value">-</div></div>
+  <div class="card"><div class="label">Dagen sinds vullen</div><div id="daysUsed" class="value">-</div></div>
+ </div>
+
+ <div class="dash">
+  <div class="col">
+   <h3>Zoutniveau</h3>
+   <div class="tank"><div id="saltFill" class="salt"></div><div id="tankPercent" class="pct">-</div></div>
+   <h3 style="margin-top:16px">Capaciteit sinds regeneratie</h3>
+   <div class="bar"><div id="capFill" class="fill"></div><div id="capPct" class="lbl">-</div></div>
+   <p id="capText" style="margin-top:8px">-</p>
+  </div>
+
+  <div class="status">
+   <h2>Status</h2>
+   <p>Laatste regeneratie: <b id="lastRegen">-</b></p>
+   <p>Verwachte navulling: <b id="prediction">-</b></p>
+   <p>Aantal regeneraties: <b id="regenCount">-</b></p>
+   <p>Laatste synchronisatie: <b id="lastUpdate">-</b></p>
+  </div>
+ </div>
 </div>
 
-<div class="page active">
-
-<div id="saltWarning" class="warning" hidden></div>
-
-<div class="cards">
-
-<div class="card">
-<div class="label">Zoutniveau</div>
-<div id="saltLevel" class="value">-</div>
+<div id="p-regen" class="page">
+ <a class="back" href="#dashboard">← Dashboard</a>
+ <h2 class="pt">Regeneraties</h2>
+ <table><thead><tr><th>Datum</th><th>Liter</th><th>Dagen</th></tr></thead><tbody id="regenTable"></tbody></table>
 </div>
 
-<div class="card">
-<div class="label">Resterend zout</div>
-<div id="saltKg" class="value">-</div>
+<div id="p-refills" class="page">
+ <a class="back" href="#dashboard">← Dashboard</a>
+ <h2 class="pt">Zoutvullingen</h2>
+ <table><thead><tr><th>Datum</th><th>Dagen</th><th>Regeneraties</th><th>Water m³</th></tr></thead><tbody id="saltTable"></tbody></table>
 </div>
 
-<div class="card">
-<div class="label">Sinds zoutvulling</div>
-<div id="waterUsed" class="value">-</div>
+<div id="p-stock" class="page">
+ <a class="back" href="#dashboard">← Dashboard</a>
+ <h2 class="pt">Zoutvoorraad</h2>
+ <div class="cards">
+  <div class="card"><div class="label">Zakken op voorraad</div><div id="stockCount" class="value">-</div></div>
+  <div class="card"><div class="label">Totaal zout</div><div id="stockKg" class="value">-</div></div>
+ </div>
+ <div id="bagRack" class="rack"></div>
 </div>
 
-<div class="card">
-<div class="label">Dagen sinds vullen</div>
-<div id="daysUsed" class="value">-</div>
+<div id="p-stats" class="page">
+ <a class="back" href="#dashboard">← Dashboard</a>
+ <h2 class="pt">Statistieken</h2>
+ <div class="stats">
+  <div class="stat"><div>Regeneraties</div><div id="stRegens" class="sv">0</div></div>
+  <div class="stat"><div>Zoutvullingen</div><div id="stRefills" class="sv">0</div></div>
+  <div class="stat"><div>Gem. liter per regeneratie</div><div id="stLiters" class="sv">-</div></div>
+  <div class="stat"><div>Gem. liter per zoutvulling</div><div id="stLitersRefill" class="sv">-</div></div>
+  <div class="stat"><div>Gem. dagen tussen regeneraties</div><div id="stDays" class="sv">-</div></div>
+  <div class="stat"><div>Gem. dagen tussen zoutvullingen</div><div id="stDaysRefill" class="sv">-</div></div>
+ </div>
 </div>
 
-</div>
-
-<div class="dashboard">
-
-<div>
-
-<h3 style="margin-bottom:12px;">
-Zoutniveau
-</h3>
-
-<div class="tank">
-
-<div id="saltFill" class="salt"></div>
-
-<div id="tankPercent" class="percent">
--
-</div>
-
-</div>
-
-<h3 style="margin-top:15px;">
-Capaciteit sinds regeneratie
-</h3>
-
-<div class="progress">
-<div id="capacityFill" class="progress-fill"></div>
-<div id="capacityPercent" class="progress-label">-</div>
-</div>
-
-<p id="capacityText" style="margin-top:8px;">
--
-</p>
-
-</div>
-
-<div class="status">
-
-<h2>Status</h2>
-
-<p>
-Laatste regeneratie:
-<b id="lastRegen"></b>
-</p>
-
-<p>
-Verwachte navulling:
-<b id="prediction"></b>
-</p>
-
-<p>
-Aantal regeneraties:
-<b id="regenCount"></b>
-</p>
-
-<p>
-Laatste synchronisatie:
-<b id="lastUpdate"></b>
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="page">
-
-<table>
-<thead>
-<tr>
-<th>Datum</th>
-<th>Liter</th>
-<th>Dagen</th>
-</tr>
-</thead>
-
-<tbody id="regenTable"></tbody>
-
-</table>
-
-</div>
-
-<div class="page">
-
-<table>
-<thead>
-<tr>
-<th>Datum</th>
-<th>Dagen</th>
-<th>Regeneraties</th>
-<th>Water m³</th>
-</tr>
-</thead>
-
-<tbody id="saltTable"></tbody>
-
-</table>
-
-</div>
-
-<div class="page">
-
-<div class="cards">
-
-<div class="card">
-<div class="label">Zakken op voorraad</div>
-<div id="stockCount" class="value">-</div>
-</div>
-
-<div class="card">
-<div class="label">Totaal zout</div>
-<div id="stockKg" class="value">-</div>
-</div>
-
-</div>
-
-<h3 style="margin-bottom:12px; text-align:center;">
-Zoutvoorraad
-</h3>
-
-<div id="bagRack" class="rack"></div>
-
-</div>
-
-<div class="page">
-
-<div class="stat-grid">
-
-<div class="stat">
-<div>Regeneraties</div>
-<div id="statRegens" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div>Zoutvullingen</div>
-<div id="statRefills" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div>Gem. liter per regeneratie</div>
-<div id="statAvgLiters" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div>Gem. liter per zoutvulling</div>
-<div id="statAvgLitersRefill" class="stat-value">-</div>
-</div>
-
-<div class="stat">
-<div>Gem. dagen tussen regeneraties</div>
-<div id="statAvgDays" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div>Gem. dagen tussen zoutvullingen</div>
-<div id="statAvgDaysRefill" class="stat-value">-</div>
-</div>
-
-</div>
-
-</div>
+</main>
 
 <script>
+const $ = id => document.getElementById(id);
+const isEmpty = v => v===null || v===undefined || v==='';
+const isNum = v => !isEmpty(v) && Number.isFinite(Number(v));
+const show = v => isEmpty(v) ? '-' : v;
+const isZero = v => isNum(v) && Number(v)===0;
+const avg = a => a.reduce((x,y)=>x+y,0)/a.length;
 
-function showTab(index){
+// Menu en pagina's
+const PAGES = ['dashboard','regen','refills','stock','stats'];
+function setMenu(open){
+ $('menu').classList.toggle('open',open);
+ $('burger').setAttribute('aria-expanded',open);
+}
+function route(){
+ let p = location.hash.slice(1);
+ if(!PAGES.includes(p)) p = 'dashboard';
+ PAGES.forEach(n=>{
+  $('p-'+n).classList.toggle('active',n===p);
+  $('m-'+n).classList.toggle('active',n===p);
+ });
+ setMenu(false);
+ window.scrollTo(0,0);
+}
+$('burger').onclick = () => setMenu(!$('menu').classList.contains('open'));
+addEventListener('hashchange',route);
+route();
 
- document.querySelectorAll('.tab')
-   .forEach(t=>t.classList.remove('active'));
-
- document.querySelectorAll('.page')
-   .forEach(p=>p.classList.remove('active'));
-
- document.querySelectorAll('.tab')[index]
-   .classList.add('active');
-
- document.querySelectorAll('.page')[index]
-   .classList.add('active');
+// Gegevens laden
+async function load(){
+ const r = await fetch('dashboard.json?t='+Date.now(),{cache:'no-store'});
+ if(!r.ok) throw new Error(r.status);
+ return r.json();
 }
 
-fetch('dashboard.json')
-.then(r=>r.json())
-.then(data=>{
+function render(d){
+ const lvl = Number(d.zoutniveau);
+ $('saltLevel').textContent = lvl+'%';
+ $('saltKg').textContent = d.resterendKg+' kg';
+ $('waterUsed').textContent = d.waterSindsZoutvulling+' m³';
+ $('daysUsed').textContent = d.dagenSindsZoutvulling;
+ $('tankPercent').textContent = lvl+'%';
 
- const isEmpty = v =>
-   v === null || v === undefined || v === '';
+ let color = 'var(--green)';
+ if(lvl<20) color = 'var(--red)';
+ else if(lvl<50) color = 'var(--orange)';
+ $('saltFill').style.height = lvl+'%';
+ $('saltFill').style.background = color;
 
- const show = v =>
-   isEmpty(v) ? '-' : v;
-
- const isZero = v =>
-   !isEmpty(v) && Number(v) === 0;
-
- // Alleen de dubbele registratie (0 liter en 0 dagen) laten we weg.
- // De eerste regeneratie, zonder meterstand, blijft staan.
- const regens =
-   data.regeneraties.filter(
-     r => !(isZero(r.liter) && isZero(r.dagen))
-   );
-
- saltLevel.innerText =
-   data.zoutniveau + '%';
-
- saltKg.innerText =
-   data.resterendKg + ' kg';
-
- waterUsed.innerText =
-   data.waterSindsZoutvulling + ' m³';
-
- daysUsed.innerText =
-   data.dagenSindsZoutvulling;
-
- tankPercent.innerText =
-   data.zoutniveau + '%';
-
- // Waarschuwing als er zout bijgevuld moet worden
- const SALT_WARN_LEVEL = 20;
-
- if(Number(data.zoutniveau) < SALT_WARN_LEVEL){
-
-   saltWarning.innerText =
-     '⚠️ Zout bijvullen: nog ' +
-     data.resterendKg + ' kg (' +
-     data.zoutniveau + '%)';
-
-   saltWarning.hidden = false;
+ if(lvl<20){
+  $('saltWarning').textContent = '⚠️ Zout bijvullen: nog '+d.resterendKg+' kg ('+lvl+'%)';
+  $('saltWarning').hidden = false;
  }
 
- let color='#22c55e';
+ // Regeneraties: dubbele registratie (0 liter en 0 dagen) weglaten
+ const regens = d.regeneraties.filter(r => !(isZero(r.liter) && isZero(r.dagen)));
 
- if(data.zoutniveau < 20)
-   color='#ef4444';
- else if(data.zoutniveau < 50)
-   color='#f59e0b';
+ $('lastRegen').textContent = d.laatsteRegeneratie;
+ $('prediction').textContent = d.verwachteNavulling;
+ $('regenCount').textContent = regens.length;
+ $('lastUpdate').textContent = d.laatsteUpdate;
 
- saltFill.style.height =
-   data.zoutniveau + '%';
+ // Capaciteit sinds regeneratie
+ const capMax = Number(d.capaciteitMax)||2300;
+ const capL = Math.max(0,Number(d.capaciteitLiter)||0);
+ const capRaw = capL/capMax*100;
+ let capColor = 'var(--accent)';
+ if(capRaw>=95) capColor = 'var(--red)';
+ else if(capRaw>=80) capColor = 'var(--orange)';
+ $('capFill').style.width = Math.min(100,capRaw)+'%';
+ $('capFill').style.background = capColor;
+ $('capPct').textContent = Math.round(capRaw)+'%';
+ $('capText').textContent = Math.round(capL)+' / '+capMax+' liter';
 
- saltFill.style.background =
-   color;
+ // Tabellen
+ $('regenTable').innerHTML = regens.map(r =>
+  `<tr><td>${r.datum}</td><td>${show(r.liter)}</td><td>${show(r.dagen)}</td></tr>`).join('');
+ $('saltTable').innerHTML = d.zoutvullingen.map(z =>
+  `<tr><td>${z.datum}</td><td>${z.dagen}</td><td>${z.regeneraties}</td><td>${z.water}</td></tr>`).join('');
 
- lastRegen.innerText =
-   data.laatsteRegeneratie;
-
- prediction.innerText =
-   data.verwachteNavulling;
-
- regenCount.innerText =
-   regens.length;
-
- lastUpdate.innerText =
-   data.laatsteUpdate;
-
- const capMax =
-   Number(data.capaciteitMax) || 2300;
-
- const capLiter =
-   Math.max(0, Number(data.capaciteitLiter) || 0);
-
- const capRaw =
-   (capLiter / capMax) * 100;
-
- const cap =
-   Math.min(100, capRaw);
-
- let capColor = '#3b82f6';
-
- if(capRaw >= 95)
-   capColor = '#ef4444';
- else if(capRaw >= 80)
-   capColor = '#f59e0b';
-
- capacityFill.style.width =
-   cap + '%';
-
- capacityFill.style.background =
-   capColor;
-
- capacityPercent.innerText =
-   Math.round(capRaw) + '%';
-
- capacityText.innerText =
-   Math.round(capLiter) +
-   ' / ' +
-   capMax +
-   ' liter';
-
- let regenRows = '';
-
- regens.forEach(r => {
-
-   regenRows += `
-   <tr>
-    <td>${r.datum}</td>
-    <td>${show(r.liter)}</td>
-    <td>${show(r.dagen)}</td>
-   </tr>
-   `;
-
- });
-
- regenTable.innerHTML =
-   regenRows;
-
- let saltRows = '';
-
- data.zoutvullingen.forEach(z => {
-
-   saltRows += `
-   <tr>
-    <td>${z.datum}</td>
-    <td>${z.dagen}</td>
-    <td>${z.regeneraties}</td>
-    <td>${z.water}</td>
-   </tr>
-   `;
-
- });
-
- saltTable.innerHTML =
-   saltRows;
-
- statRegens.innerText =
-   regens.length;
-
- statRefills.innerText =
-   data.zoutvullingen.length;
-
- const isNum = v =>
-   !isEmpty(v) && Number.isFinite(Number(v));
-
- const literValues =
-   regens
-   .filter(r => isNum(r.liter))
-   .map(r => Number(r.liter));
-
- const dayValues =
-   regens
-   .filter(r => isNum(r.dagen))
-   .map(r => Number(r.dagen));
-
- const avgLiters =
-   literValues.length
-   ? Math.round(
-     literValues.reduce((a,b)=>a+b,0) /
-     literValues.length
-   )
-   : 0;
-
- const avgDays =
-   dayValues.length
-   ? (
-     dayValues.reduce((a,b)=>a+b,0) /
-     dayValues.length
-   ).toFixed(1)
-   : 0;
-
- statAvgLiters.innerText =
-   avgLiters;
-
- statAvgDays.innerText =
-   avgDays;
-
- // Gemiddelden per zoutvulling
- const refillLiters =
-   data.zoutvullingen
-   .filter(z => isNum(z.water) && Number(z.water) > 0)
-   .map(z => Number(z.water) * 1000);
-
- const refillDays =
-   data.zoutvullingen
-   .filter((z, i) => i > 0 && isNum(z.dagen))
-   .map(z => Number(z.dagen));
-
- statAvgLitersRefill.innerText =
-   refillLiters.length
-   ? Math.round(
-       refillLiters.reduce((a,b)=>a+b,0) /
-       refillLiters.length
-     ).toLocaleString('nl-NL')
-   : '-';
-
- statAvgDaysRefill.innerText =
-   refillDays.length
-   ? (
-       refillDays.reduce((a,b)=>a+b,0) /
-       refillDays.length
-     ).toFixed(1)
-   : '-';
+ // Statistieken
+ const lit = regens.filter(r=>isNum(r.liter)).map(r=>Number(r.liter));
+ const dag = regens.filter(r=>isNum(r.dagen)).map(r=>Number(r.dagen));
+ const rl = d.zoutvullingen.filter(z=>isNum(z.water)&&Number(z.water)>0).map(z=>Number(z.water)*1000);
+ const rd = d.zoutvullingen.filter((z,i)=>i>0&&isNum(z.dagen)).map(z=>Number(z.dagen));
+ $('stRegens').textContent = regens.length;
+ $('stRefills').textContent = d.zoutvullingen.length;
+ $('stLiters').textContent = lit.length ? Math.round(avg(lit)).toLocaleString('nl-NL') : '-';
+ $('stLitersRefill').textContent = rl.length ? Math.round(avg(rl)).toLocaleString('nl-NL') : '-';
+ $('stDays').textContent = dag.length ? avg(dag).toFixed(1) : '-';
+ $('stDaysRefill').textContent = rd.length ? avg(rd).toFixed(1) : '-';
 
  // Zoutvoorraad: 3 stapels, zakken van onder naar boven
- const stackCount = 3;
-
- const stockMax =
-   Number(data.zoutVoorraadMax) || 9;
-
- const levels =
-   Math.ceil(stockMax / stackCount);
-
- const stockKnown =
-   Number.isFinite(Number(data.zoutVoorraad));
-
- const stock =
-   stockKnown
-   ? Math.min(
-       stockMax,
-       Math.max(0, Number(data.zoutVoorraad))
-     )
-   : 0;
-
- const bagKg =
-   Number(data.zakKg) || 15;
-
- stockCount.innerText =
-   stockKnown
-   ? stock + ' / ' + stockMax
-   : '-';
-
- stockKg.innerText =
-   stockKnown
-   ? (stock * bagKg) + ' kg'
-   : '-';
-
- let bagColor = '#22c55e';
-
- if(stock <= 1)
-   bagColor = '#ef4444';
- else if(stock <= 3)
-   bagColor = '#f59e0b';
-
- let bagHtml = '';
-
- for(let level = levels - 1; level >= 0; level--){
-
-   for(let s = 0; s < stackCount; s++){
-
-     const inStack =
-       Math.floor(stock / stackCount) +
-       (s < stock % stackCount ? 1 : 0);
-
-     const full = inStack > level;
-
-     bagHtml +=
-       '<div class="bag"' +
-       (full
-         ? ' style="background:' + bagColor + ';border-color:' + bagColor + ';"'
-         : '') +
-       '></div>';
-   }
+ const stacks = 3;
+ const max = Number(d.zoutVoorraadMax)||9;
+ const levels = Math.ceil(max/stacks);
+ const known = isNum(d.zoutVoorraad);
+ const stock = known ? Math.min(max,Math.max(0,Number(d.zoutVoorraad))) : 0;
+ const bagKg = Number(d.zakKg)||15;
+ $('stockCount').textContent = known ? stock+' / '+max : '-';
+ $('stockKg').textContent = known ? (stock*bagKg)+' kg' : '-';
+ let bc = 'var(--green)';
+ if(stock<=1) bc = 'var(--red)';
+ else if(stock<=3) bc = 'var(--orange)';
+ let html = '';
+ for(let l=levels-1;l>=0;l--){
+  for(let s=0;s<stacks;s++){
+   const inStack = Math.floor(stock/stacks)+(s<stock%stacks?1:0);
+   html += inStack>l
+    ? `<div class="bag" style="background:${bc};border-color:${bc}"></div>`
+    : '<div class="bag"></div>';
+  }
  }
+ $('bagRack').innerHTML = html;
+}
 
- bagRack.innerHTML = bagHtml;
-
-});
-
+load().then(render).catch(()=>{ $('err').hidden = false; });
 </script>
-
 </body>
 </html>
