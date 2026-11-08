@@ -522,13 +522,23 @@ Zoutvoorraad
 </div>
 
 <div class="stat">
-<div>Gem. liter</div>
+<div>Gem. liter per regeneratie</div>
 <div id="statAvgLiters" class="stat-value">0</div>
 </div>
 
 <div class="stat">
-<div>Gem. dagen</div>
+<div>Gem. liter per zoutvulling</div>
+<div id="statAvgLitersRefill" class="stat-value">-</div>
+</div>
+
+<div class="stat">
+<div>Gem. dagen tussen regeneraties</div>
 <div id="statAvgDays" class="stat-value">0</div>
+</div>
+
+<div class="stat">
+<div>Gem. dagen tussen zoutvullingen</div>
+<div id="statAvgDaysRefill" class="stat-value">-</div>
 </div>
 
 </div>
@@ -734,6 +744,33 @@ fetch('dashboard.json')
 
  statAvgDays.innerText =
    avgDays;
+
+ // Gemiddelden per zoutvulling
+ const refillLiters =
+   data.zoutvullingen
+   .filter(z => isNum(z.water) && Number(z.water) > 0)
+   .map(z => Number(z.water) * 1000);
+
+ const refillDays =
+   data.zoutvullingen
+   .filter((z, i) => i > 0 && isNum(z.dagen))
+   .map(z => Number(z.dagen));
+
+ statAvgLitersRefill.innerText =
+   refillLiters.length
+   ? Math.round(
+       refillLiters.reduce((a,b)=>a+b,0) /
+       refillLiters.length
+     ).toLocaleString('nl-NL')
+   : '-';
+
+ statAvgDaysRefill.innerText =
+   refillDays.length
+   ? (
+       refillDays.reduce((a,b)=>a+b,0) /
+       refillDays.length
+     ).toFixed(1)
+   : '-';
 
  // Zoutvoorraad: 3 stapels, zakken van onder naar boven
  const stackCount = 3;
