@@ -4,8 +4,8 @@
   "waterSindsZoutvulling": 14,
   "dagenSindsZoutvulling": 43,
   "verwachteNavulling": "28-3-2027",
-  "laatsteRegeneratie": "8-11-2026",
-  "capaciteitLiter": 2836,
+  "laatsteRegeneratie": "13-11-2026",
+  "capaciteitLiter": 0,
   "capaciteitMax": 2300,
   "zoutVoorraad": 6,
   "zoutVoorraadMax": 9,
@@ -46,6 +46,12 @@
       "liter": 2633,
       "dagen": 4,
       "regenWater": 154
+    },
+    {
+      "datum": "13-11-2026",
+      "liter": 3014,
+      "dagen": 5,
+      "regenWater": 185
     }
   ],
   "zoutvullingen": [
@@ -68,5 +74,5 @@
       "water": 0
     }
   ],
-  "laatsteUpdate": "13-11-2026, 02:00:05"
+  "laatsteUpdate": "13-11-2026, 04:45:05"
 }
