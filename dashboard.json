@@ -5,7 +5,7 @@
   "dagenSindsZoutvulling": 49,
   "verwachteNavulling": "5-3-2027",
   "laatsteRegeneratie": "17-11-2026",
-  "capaciteitLiter": 911,
+  "capaciteitLiter": 917,
   "capaciteitMax": 2300,
   "zoutVoorraad": 6,
   "zoutVoorraadMax": 9,
@@ -80,5 +80,5 @@
       "water": 0
     }
   ],
-  "laatsteUpdate": "19-11-2026, 02:00:05"
+  "laatsteUpdate": "19-11-2026, 04:45:05"
 }
