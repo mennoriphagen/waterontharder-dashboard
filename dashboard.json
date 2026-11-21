@@ -1,13 +1,13 @@
 {
-  "zoutniveau": 67,
-  "resterendKg": 10,
-  "waterSindsZoutvulling": 19.4,
-  "dagenSindsZoutvulling": 51,
-  "verwachteNavulling": "2-3-2027",
+  "zoutniveau": 100,
+  "resterendKg": 15,
+  "waterSindsZoutvulling": 0,
+  "dagenSindsZoutvulling": 0,
+  "verwachteNavulling": "Onvoldoende data",
   "laatsteRegeneratie": "17-11-2026",
-  "capaciteitLiter": 2001,
+  "capaciteitLiter": 2153,
   "capaciteitMax": 2300,
-  "zoutVoorraad": 6,
+  "zoutVoorraad": 5,
   "zoutVoorraadMax": 9,
   "zakKg": 15,
   "regeneraties": [
@@ -78,7 +78,13 @@
       "dagen": 71,
       "regeneraties": 0,
       "water": 0
+    },
+    {
+      "datum": "21-11-2026",
+      "dagen": 51,
+      "regeneraties": 9,
+      "water": 19.6
     }
   ],
-  "laatsteUpdate": "21-11-2026, 04:45:05"
+  "laatsteUpdate": "21-11-2026, 08:25:58"
 }
